@@ -104,7 +104,12 @@ func main() {
 			case "*":
 				fmt.Println(intToRoman(a * b))
 			case "/":
-				fmt.Println(intToRoman(a / b))
+				if a > b {
+					fmt.Println(intToRoman(a / b))
+				} else {
+					fmt.Println("NULLA")
+					return
+				}
 			case "-":
 				if a > b {
 					fmt.Println(intToRoman(a - b))
