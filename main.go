@@ -63,7 +63,7 @@ func main() {
 		args := strings.Split(input, " ")
 		if len(args) != 3 {
 			fmt.Println("Неверное количество аргументов")
-			continue
+			return
 		}
 
 		aStr := args[0]
@@ -73,7 +73,7 @@ func main() {
 		validOperators := "+-*/"
 		if !strings.Contains(validOperators, operator) || len(operator) != 1 {
 			fmt.Println("Ошибка ввода оператора")
-			continue
+			return
 		}
 
 		if isInteger(aStr) && isInteger(bStr) {
@@ -81,11 +81,11 @@ func main() {
 			b, _ := strconv.Atoi(bStr)
 			if a < 1 || b < 1 {
 				fmt.Println("Один или оба аргумента меньше 1")
-				continue
+				return
 			}
 			if a > 10 || b > 10 {
 				fmt.Println("Один или оба аргумента больше 10")
-				continue
+				return
 			}
 			switch operator {
 			case "+":
@@ -111,20 +111,20 @@ func main() {
 					if a > b {
 						fmt.Println(intToRoman(a / b))
 					} else {
-						fmt.Println("NULLA")
+						fmt.Println("PANIC: result < 1")
 						continue
 					}
 				case "-":
 					if a > b {
 						fmt.Println(intToRoman(a - b))
 					} else {
-						fmt.Println("отрицательных римских чисел не существует или результат = NULLA")
+						fmt.Println("PANIC: Oтрицательных римских чисел не существует или результат < 1")
 						continue
 					}
 				}
 			} else {
 				fmt.Println("Вводимые аргументы не соответствуют требованиям")
-				continue
+				return
 			}
 		}
 	}
