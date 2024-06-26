@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -55,72 +56,76 @@ func intToRoman(x int) string {
 	return result
 }
 func main() {
-	if len(os.Args) != 4 {
-		fmt.Println("Неверное количество аргументов")
-		return
-	}
-
-	aStr := os.Args[1]
-	operator := os.Args[2]
-	bStr := os.Args[3]
-
-	validOperators := "+-*/"
-	if !strings.Contains(validOperators, operator) || len(operator) != 1 {
-		fmt.Println("Ошибка ввода оператора")
-		return
-	}
-
-	if isInteger(aStr) && isInteger(bStr) {
-		a, _ := strconv.Atoi(aStr)
-		b, _ := strconv.Atoi(bStr)
-		if a < 1 || b < 1 {
-			fmt.Println("Один или оба аргумента меньше 1")
-			return
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		args := strings.Split(input, " ")
+		if len(args) != 3 {
+			fmt.Println("Неверное количество аргументов")
+			continue
 		}
-		if a > 10 || b > 10 {
-			fmt.Println("Один или оба аргумента больше 10")
-			return
-		}
-		switch operator {
-		case "+":
-			fmt.Println(a + b)
-		case "-":
-			fmt.Println(a - b)
-		case "*":
-			fmt.Println(a * b)
-		case "/":
-			fmt.Println(a / b)
-		}
-	} else {
-		a, aStrConfirm := romanToInt(aStr)
-		b, bStrConfirm := romanToInt(bStr)
-		//fmt.Println(a, aStrConfirm)
-		//fmt.Println(b, bStrConfirm)
-		if (aStrConfirm && bStrConfirm) == true {
 
+		aStr := args[0]
+		operator := args[1]
+		bStr := args[2]
+
+		validOperators := "+-*/"
+		if !strings.Contains(validOperators, operator) || len(operator) != 1 {
+			fmt.Println("Ошибка ввода оператора")
+			continue
+		}
+
+		if isInteger(aStr) && isInteger(bStr) {
+			a, _ := strconv.Atoi(aStr)
+			b, _ := strconv.Atoi(bStr)
+			if a < 1 || b < 1 {
+				fmt.Println("Один или оба аргумента меньше 1")
+				continue
+			}
+			if a > 10 || b > 10 {
+				fmt.Println("Один или оба аргумента больше 10")
+				continue
+			}
 			switch operator {
 			case "+":
-				fmt.Println(intToRoman(a + b))
-			case "*":
-				fmt.Println(intToRoman(a * b))
-			case "/":
-				if a > b {
-					fmt.Println(intToRoman(a / b))
-				} else {
-					fmt.Println("NULLA")
-					return
-				}
+				fmt.Println(a + b)
 			case "-":
-				if a > b {
-					fmt.Println(intToRoman(a - b))
-				} else {
-					fmt.Println("отрицательных римских чисел не существует или результат = NULLA")
-					return
-				}
+				fmt.Println(a - b)
+			case "*":
+				fmt.Println(a * b)
+			case "/":
+				fmt.Println(a / b)
 			}
 		} else {
-			fmt.Println("Вводимые аргументы не соответствуют требованиям")
-			return
+			a, aStrConfirm := romanToInt(aStr)
+			b, bStrConfirm := romanToInt(bStr)
+			if (aStrConfirm && bStrConfirm) == true {
+
+				switch operator {
+				case "+":
+					fmt.Println(intToRoman(a + b))
+				case "*":
+					fmt.Println(intToRoman(a * b))
+				case "/":
+					if a > b {
+						fmt.Println(intToRoman(a / b))
+					} else {
+						fmt.Println("NULLA")
+						continue
+					}
+				case "-":
+					if a > b {
+						fmt.Println(intToRoman(a - b))
+					} else {
+						fmt.Println("отрицательных римских чисел не существует или результат = NULLA")
+						continue
+					}
+				}
+			} else {
+				fmt.Println("Вводимые аргументы не соответствуют требованиям")
+				continue
+			}
 		}
 	}
 }
