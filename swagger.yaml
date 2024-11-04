@@ -1,0 +1,101 @@
+basePath: /api/
+definitions:
+  main.Address:
+    properties:
+      city:
+        type: string
+      house:
+        type: string
+      lat:
+        type: string
+      lon:
+        type: string
+      street:
+        type: string
+    type: object
+  main.GeocodeRequest:
+    properties:
+      lat:
+        type: string
+      lng:
+        type: string
+    type: object
+  main.GeocodeResponse:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/main.Address'
+        type: array
+    type: object
+  main.SearchRequest:
+    properties:
+      query:
+        type: string
+    type: object
+  main.SearchResponse:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/main.Address'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: GeoService API.
+  title: GeoService API
+  version: "1.0"
+paths:
+  /api/address/geocode:
+    post:
+      description: Returns a list of addresses for the given latitude and longitude
+      parameters:
+      - description: Geocode request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.GeocodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.GeocodeResponse'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get addresses by latitude and longitude
+  /api/address/search:
+    post:
+      description: Returns a list of addresses matching the query
+      parameters:
+      - description: Search request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.SearchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SearchResponse'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Search for addresses by query
+swagger: "2.0"
